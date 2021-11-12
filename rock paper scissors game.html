@@ -1,0 +1,262 @@
+<html>
+    <head>
+    <body>
+        <div class="game-container">
+           <center> <h1>Rock Paper Scissors</h1> </center>
+            <p>Click Here on the boxes</p>
+            <div class="button-container">
+                <div id="rock" class="option">
+                    <img src="rock.png" /><br />
+                    <span class="label">Rock</span>
+                </div>
+                <div id="paper" class="option">
+                    <img src="paper.png" /><br />
+                    <span class="label">Paper</span>
+                </div>
+                <div id="scissors" class="option">
+                    <img src="scissor.png" /><br />
+                    <span class="label">Scissor</span>
+                </div>
+            </div>
+            <div class="winnings">
+                <div class="result winBox">
+                    <h2>Results</h2>
+                    <div class="pickContainer">
+                        <span class="pickText">Me: </span><span id="userPick"></span>
+                    </div>
+                    <div class="pickContainer">
+                        <span class="pickText">Computer: </span><span id="compPick"></span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="resultContainer">
+                    <center>    <span id="overallResult">Score</span> </center>
+                    </div>
+                </div>
+                <div class="scores winBox">
+                    <h2>Score</h2>
+                    <div class="userScore score-box">
+                        My Score is now: <span id="userScore">0</span>
+                    </div>
+                    <div class="compScore score-box">
+                        Computer Score is now: <span id="compScore">0</span>
+                    </div>
+                </div>
+            </div>
+    </body>
+
+</html>
+
+<style>
+    html{
+        background-color: rgb(189, 122, 35);
+    }
+    .game-container {
+    max-width:800px;
+    width: 100%;
+    margin: 10px auto 0;
+    padding:15px 20px;
+    border: 2px solid #eee;
+}
+.option {
+    display:inline-block;
+    text-align:center;
+    width:28%;
+    margin: 0 1%;
+    background-color:#efefef;
+    padding: 2% 1%;
+    vertical-align:top;
+    border: 2px solid #fff;
+    transition: border .2s ease-in-out;
+    -webkit-transition: border .2s ease-in-out;
+    -moz-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+    cursor:pointer;
+}
+.option:nth-of-type(0) {
+    margin-left: 0%;
+}
+.option:nth-of-type(2) {
+    margin-right: 0%;
+}
+.option img {
+    width:5em;
+    height:5em;
+    margin-bottom:20px;
+}
+.option:hover {
+    border:2px solid #0080ff;
+    transition: border .2s ease-in-out;
+    -webkit-transition: border .2s ease-in-out;
+    -moz-transition: border .2s ease-in-out;
+    -o-transition: border .2s ease-in-out;
+}
+.option .label {
+  position:relative;
+  bottom: 0px;
+    font-size:25px;
+}
+body {
+    font-family: Arial;
+}
+h1 {
+    margin-top: 0px;
+}
+sub.center {
+    text-align: center;
+    margin-top:20px;
+    display:inline-block;
+}
+
+.score {
+  margin-top:2em;
+}
+.score-box {
+  margin-bottom: 10px;
+}
+.pickContainer {
+  margin-bottom: 10px;
+}
+.pickContainer .pickText {
+  font-weight: 700;
+}
+.winnings .winBox {
+  width: 49%;
+  display:inline-block;
+  vertical-align: top;
+}
+.resultContainer {
+  margin-top:10px;
+}
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+
+@media screen and (max-width: 800px) {
+  .winnings .winBox {
+    width: 100%;
+    display: block;
+  }
+}
+</style>
+
+<script>
+    let userScore = 0,
+    compScore = 0;
+const elUserScore = document.getElementById('userScore'),
+      elCompScore = document.getElementById('compScore'),
+      elUserPick = document.getElementById('userPick'),
+      elCompPick = document.getElementById('compPick'),
+      elOverallResult = document.getElementById('overallResult');
+
+let gameCheck = {
+    "rock": (choice) => {
+        if(choice === "paper"){
+            console.log("5a. paper > rock");
+            return result = ["rock wins", "user"];
+        }
+        if(choice === "scissors"){
+            console.log("5b. rock > scissors");
+            return result = ["paper wins", "comp"];
+        }
+    },
+    "paper": (choice) => {
+        if(choice === "rock"){
+            console.log("5a. paper > rock");
+            return result = ["paper wins", "user"];
+        }
+        if(choice === "scissors"){
+            console.log("5c. scissors > paper");
+            return result = ["scissors win", "comp"];
+        }
+    },
+    "scissors": (choice) => {
+        if(choice === "paper"){
+            console.log("5c. scissors > paper");
+            return result = ["rock wins", "comp"];
+        }
+        if(choice === "rock"){
+            console.log("5b. rock > scissors");
+            return result = ["scissors win", "user"];
+        }
+    }
+}
+
+let compare = (choice1, choice2) => {
+    if(!(choice1 in gameCheck) || !(choice2 in gameCheck)){
+        console.log("Invalid arguments passed");
+        return false;
+    }
+    if(choice1 === choice2) {
+        return result = ["The result is a tie!", "tie"];
+    }
+    return gameCheck[choice1](choice2);
+}
+
+
+let computerRoll = function() {
+    console.log("2. Computer is rolling.");
+    let computerChoice = Math.random();
+    if (computerChoice < 0.34) {
+        computerChoice = "rock";
+        console.log("3a. Math is " + computerChoice);
+    } else if(computerChoice <= 0.67) {
+        computerChoice = "paper";
+        console.log("3b. Math is " + computerChoice);
+    } else {
+        computerChoice = "scissors";
+        console.log("3c. Math is " + computerChoice);
+    }
+    console.log("3sub. Computer Choice is " + computerChoice);
+    return computerChoice;
+};
+
+let userChoiceFunc = function(choice) {
+    let userChoice = choice;
+    console.log("1. User Choice is " + choice);
+    let computerChoice = computerRoll();
+    console.log(compare(userChoice, computerChoice));
+    console.log("6. " + result[0]);
+    let getResult = (function() {
+        if (result[1] === "user") {
+            userScore++;
+            console.log("7a. Add one to user! userScore is now " + userScore);
+            return userScore;
+        } else if (result[1] === "comp") {
+            compScore++;
+            console.log("7b. Add one to computer! compScore is now " + compScore);
+            return compScore;
+        } else if (result[1] === "tie") {
+            console.log("7c. It was a tie!")
+        }
+    } () );
+    console.log("User Score is now " + userScore + ", while Computer Score is now " + compScore + ".");
+    elUserScore.textContent = userScore;
+    elCompScore.textContent = compScore;
+    elUserPick.textContent = userChoice;
+    elCompPick.textContent = computerChoice;
+    elOverallResult.textContent = result[0];
+}
+
+let rockBox = document.getElementById('rock');
+rockBox.addEventListener('click', function() {
+    userChoiceFunc("rock");
+}, false);
+
+let paperBox = document.getElementById('paper');
+paperBox.addEventListener('click', function() {
+    userChoiceFunc("paper");
+}, false);
+let scissorBox = document.getElementById('scissors');
+scissorBox.addEventListener('click', function() {
+    userChoiceFunc("scissors");
+}, false);
+
+</script>
